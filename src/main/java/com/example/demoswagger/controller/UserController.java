@@ -3,6 +3,7 @@ package com.example.demoswagger.controller;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.DeleteMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -13,12 +14,24 @@ import org.springframework.web.bind.annotation.RestController;
 
 import com.example.demoswagger.model.Users;
 
+import io.swagger.v3.oas.annotations.Operation;
+import io.swagger.v3.oas.annotations.links.Link;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
+import io.swagger.v3.oas.annotations.tags.Tag;
 
+@Tag(name = "user", description = "the user API")
 @RestController
 public class UserController {
 
 	private List<Users> users = createList();
-
+	
+	@Operation(summary = "Find all users", description = "Returns list of users", tags = { "user" })
+    @ApiResponses(value = {
+        @ApiResponse(responseCode = "200", description = "successful operation", content = @Content),
+        @ApiResponse(responseCode = "400", description = "Invalid ID supplied", content = @Content),
+        @ApiResponse(responseCode = "404", description = "User not found", content = @Content) })
 	@RequestMapping(value = "/users", method = RequestMethod.GET, produces = "application/json")
 	public List<Users> firstPage() {
 		return users;
